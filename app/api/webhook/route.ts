@@ -25,15 +25,15 @@ export async function POST(request: NextRequest) {
     const event = stripe.webhooks.constructEvent(payload, signature, secret);
     if (
       event.type === "checkout.session.completed" ||
-      event.type === "checkout.session.async_payment_succeeded"
+      event.type === "checkout.session.async_payment_succeeded" ||
+      event.type === "payment_intent.succeeded"
     ) {
-      const session = event.data.object;
+      const object = event.data.object;
       console.log("donation_completed", {
-        id: session.id,
-        amount_total: session.amount_total,
-        currency: session.currency,
-        mode: session.mode,
-        customer_email: session.customer_details?.email,
+        id: object.id,
+        amount:
+          "amount_total" in object ? object.amount_total : object.amount,
+        currency: object.currency,
       });
     }
     return NextResponse.json({ received: true });

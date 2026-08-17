@@ -1,18 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import Stripe from "stripe";
+import { ensureWalletDomains, getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
 
 const MIN_CENTS = 100;
 const MAX_CENTS = 5_000_000;
-
-function getStripe() {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
-    throw new Error("STRIPE_SECRET_KEY is not set");
-  }
-  return new Stripe(key);
-}
 
 function siteUrl(request: NextRequest) {
   return (
@@ -20,6 +12,18 @@ function siteUrl(request: NextRequest) {
     request.headers.get("origin") ||
     "http://localhost:3000"
   );
+}
+
+function donationCents(amount: unknown) {
+  const dollars = Number(amount);
+  const cents = Math.round(dollars * 100);
+  if (!Number.isFinite(cents) || cents < MIN_CENTS) {
+    return { error: "Minimum donation is $1." };
+  }
+  if (cents > MAX_CENTS) {
+    return { error: "Please contact us for gifts over $50,000." };
+  }
+  return { cents };
 }
 
 export async function POST(request: NextRequest) {
@@ -30,37 +34,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const dollars = Number(body.amount);
-  const cents = Math.round(dollars * 100);
-  if (!Number.isFinite(cents) || cents < MIN_CENTS) {
-    return NextResponse.json(
-      { error: "Minimum donation is $1." },
-      { status: 400 },
-    );
-  }
-  if (cents > MAX_CENTS) {
-    return NextResponse.json(
-      { error: "Please contact us for gifts over $50,000." },
-      { status: 400 },
-    );
+  const parsed = donationCents(body.amount);
+  if ("error" in parsed) {
+    return NextResponse.json({ error: parsed.error }, { status: 400 });
   }
 
   const productId = process.env.STRIPE_PRODUCT_ID;
-  const priceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
-    currency: "usd",
-    unit_amount: cents,
-    ...(productId
-      ? { product: productId }
-      : {
-          product_data: {
-            name: "Donation to Cookies for Cancer",
-            description: "Thank you for baking hope.",
-          },
-        }),
-  };
 
   try {
     const stripe = getStripe();
+    await ensureWalletDomains(request);
+
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
       mode: "payment",
@@ -70,7 +54,18 @@ export async function POST(request: NextRequest) {
       line_items: [
         {
           quantity: 1,
-          price_data: priceData,
+          price_data: {
+            currency: "usd",
+            unit_amount: parsed.cents,
+            ...(productId
+              ? { product: productId }
+              : {
+                  product_data: {
+                    name: "Donation to Cookies for Cancer",
+                    description: "Thank you for baking hope.",
+                  },
+                }),
+          },
         },
       ],
       return_url: `${siteUrl(request)}/thanks?session_id={CHECKOUT_SESSION_ID}`,

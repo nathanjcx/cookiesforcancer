@@ -1,15 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 export function DonateCard() {
-  const [amount, setAmount] = useState("");
-  const [checkout, setCheckout] = useState(false);
+  const [amount, setAmount] = useState("5");
   const [error, setError] = useState("");
+  const [checkout, setCheckout] = useState(false);
+  const [ready, setReady] = useState(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const checkoutRef = useRef<{ destroy: () => void } | null>(null);
+  const errorId = useId();
+  const hintId = useId();
 
   const selected = Number(amount);
+  const empty = amount.trim() === "";
   const valid = Number.isFinite(selected) && selected >= 1;
   const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 
@@ -17,6 +21,7 @@ export function DonateCard() {
     if (!checkout || !publishableKey) return;
 
     let cancelled = false;
+    setReady(false);
 
     async function mountCheckout() {
       try {
@@ -51,10 +56,12 @@ export function DonateCard() {
         if (mountRef.current) {
           embedded.mount(mountRef.current);
         }
+        if (!cancelled) setReady(true);
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : "Checkout failed.");
           setCheckout(false);
+          setReady(false);
         }
       }
     }
@@ -75,60 +82,107 @@ export function DonateCard() {
       return;
     }
     if (!publishableKey) {
-      setError(
-        "Stripe keys are not set yet. Add them in Vercel env vars to accept donations.",
-      );
+      setError("Donations are not available yet.");
       return;
     }
     setCheckout(true);
   }
 
+  function closeCheckout() {
+    setCheckout(false);
+    setReady(false);
+  }
+
   return (
     <div className="form" id="donate">
       {!publishableKey ? (
-        <p className="setup">Add Stripe keys to start accepting donations.</p>
+        <p className="notice" role="status">
+          Donations are not available yet.
+        </p>
       ) : null}
 
+      <label className="field-label" htmlFor="donation-amount">
+        Amount
+      </label>
+      <div className={`amount-field${error && !valid ? " is-invalid" : ""}`}>
+        <span aria-hidden="true">$</span>
+        <input
+          id="donation-amount"
+          inputMode="decimal"
+          autoComplete="off"
+          placeholder="0"
+          value={amount}
+          onChange={(event) => {
+            setAmount(event.target.value);
+            if (error) setError("");
+          }}
+          aria-invalid={Boolean(error && !valid)}
+          aria-describedby={`${hintId}${error ? ` ${errorId}` : ""}`}
+        />
+      </div>
+      <p className="field-hint" id={hintId}>
+        {empty
+          ? "Enter an amount to continue. Minimum $1."
+          : valid
+            ? `Total ${selected.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: selected % 1 ? 2 : 0,
+              })}`
+            : "Minimum $1."}
+      </p>
+
+      {error && !checkout ? (
+        <p className="error" id={errorId} role="alert">
+          {error}
+        </p>
+      ) : null}
+
+      <button
+        className="btn btn-accent btn-block"
+        type="button"
+        onClick={startCheckout}
+        disabled={!valid || !publishableKey}
+      >
+        Donate
+      </button>
+
       {checkout ? (
-        <>
-          <button
-            className="back"
-            type="button"
-            onClick={() => setCheckout(false)}
-          >
-            ← Change amount
-          </button>
-          {error ? <p className="error">{error}</p> : null}
-          <div className="checkout" ref={mountRef} />
-        </>
-      ) : (
-        <>
-          <p className="field-label">Amount</p>
-          <label className="custom">
-            <span>$</span>
-            <input
-              inputMode="decimal"
-              placeholder="Enter donation amount"
-              value={amount}
-              onChange={(event) => setAmount(event.target.value)}
-              aria-label="Donation amount"
-            />
-          </label>
-
-          {error ? <p className="error">{error}</p> : null}
-
-          {valid ? (
-            <p className="total">
-              Total donation{" "}
-              <strong>${selected.toFixed(selected % 1 ? 2 : 0)}</strong>
-            </p>
-          ) : null}
-
-          <button className="donate" type="button" onClick={startCheckout}>
-            Donate
-          </button>
-        </>
-      )}
+        <div
+          className="checkout-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Donate with Stripe"
+        >
+          <div className="checkout-modal">
+            <button
+              className="btn btn-ghost btn-back"
+              type="button"
+              onClick={closeCheckout}
+            >
+              Close
+            </button>
+            {error ? (
+              <p className="error" role="alert">
+                {error}
+              </p>
+            ) : null}
+            <div className="checkout-wrap" aria-busy={!ready}>
+              {!ready ? (
+                <div className="checkout-pending" role="status">
+                  <span className="progress" aria-hidden="true" />
+                  <p>Loading checkout</p>
+                </div>
+              ) : null}
+              <div
+                className="checkout"
+                ref={mountRef}
+                data-ready={ready ? "true" : "false"}
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

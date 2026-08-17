@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Cookies for Cancer",
   description:
-    "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
+    "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
   applicationName: "Cookies for Cancer",
   keywords: [
     "donate",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cookies for Cancer",
     description:
-      "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
+      "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
     url: siteUrl,
     siteName: "Cookies for Cancer",
     type: "website",
@@ -31,16 +31,19 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Cookies for Cancer",
     description:
-      "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
+      "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
   },
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/favicon.svg" }],
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png" }],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#f6eee0",
   width: "device-width",
   initialScale: 1,
 };
@@ -60,7 +63,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,650&family=Outfit:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
