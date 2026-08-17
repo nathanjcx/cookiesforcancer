@@ -7,7 +7,8 @@ const siteUrl =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Cookies for Cancer",
-  description: "Donate to help people facing cancer.",
+  description:
+    "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
   applicationName: "Cookies for Cancer",
   keywords: [
     "donate",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Cookies for Cancer",
-    description: "Donate to help people facing cancer.",
+    description:
+      "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
     url: siteUrl,
     siteName: "Cookies for Cancer",
     type: "website",
@@ -28,7 +30,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Cookies for Cancer",
-    description: "Donate to help people facing cancer.",
+    description:
+      "Donate to help people facing cancer. Gifts go to the American Cancer Society.",
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
@@ -37,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f4ead8",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
@@ -57,7 +60,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,650&family=Outfit:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>

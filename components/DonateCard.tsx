@@ -1,43 +1,72 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  EmbeddedCheckout,
-  EmbeddedCheckoutProvider,
-} from "@stripe/react-stripe-js";
-
-const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
-const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
+import { useEffect, useRef, useState } from "react";
 
 export function DonateCard() {
   const [amount, setAmount] = useState("");
   const [checkout, setCheckout] = useState(false);
   const [error, setError] = useState("");
+  const mountRef = useRef<HTMLDivElement>(null);
+  const checkoutRef = useRef<{ destroy: () => void } | null>(null);
 
   const selected = Number(amount);
   const valid = Number.isFinite(selected) && selected >= 1;
+  const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 
-  const fetchClientSecret = useCallback(async () => {
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: selected }),
-    });
-    const data = (await response.json()) as {
-      clientSecret?: string;
-      error?: string;
-    };
-    if (!response.ok || !data.clientSecret) {
-      throw new Error(data.error || "Could not start checkout.");
+  useEffect(() => {
+    if (!checkout || !publishableKey) return;
+
+    let cancelled = false;
+
+    async function mountCheckout() {
+      try {
+        const { loadStripe } = await import("@stripe/stripe-js");
+        const stripe = await loadStripe(publishableKey);
+        if (!stripe || cancelled) return;
+
+        const embedded = await stripe.initEmbeddedCheckout({
+          fetchClientSecret: async () => {
+            const response = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ amount: selected }),
+            });
+            const data = (await response.json()) as {
+              clientSecret?: string;
+              error?: string;
+            };
+            if (!response.ok || !data.clientSecret) {
+              throw new Error(data.error || "Could not start checkout.");
+            }
+            return data.clientSecret;
+          },
+        });
+
+        if (cancelled) {
+          embedded.destroy();
+          return;
+        }
+
+        checkoutRef.current = embedded;
+        if (mountRef.current) {
+          embedded.mount(mountRef.current);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Checkout failed.");
+          setCheckout(false);
+        }
+      }
     }
-    return data.clientSecret;
-  }, [selected]);
 
-  const options = useMemo(
-    () => ({ fetchClientSecret }),
-    [fetchClientSecret],
-  );
+    void mountCheckout();
+
+    return () => {
+      cancelled = true;
+      checkoutRef.current?.destroy();
+      checkoutRef.current = null;
+    };
+  }, [checkout, publishableKey, selected]);
 
   function startCheckout() {
     setError("");
@@ -45,7 +74,7 @@ export function DonateCard() {
       setError("Enter at least $1.");
       return;
     }
-    if (!stripePromise) {
+    if (!publishableKey) {
       setError(
         "Stripe keys are not set yet. Add them in Vercel env vars to accept donations.",
       );
@@ -57,12 +86,10 @@ export function DonateCard() {
   return (
     <div className="form" id="donate">
       {!publishableKey ? (
-        <p className="setup">
-          Add Stripe keys to start accepting donations.
-        </p>
+        <p className="setup">Add Stripe keys to start accepting donations.</p>
       ) : null}
 
-      {checkout && stripePromise ? (
+      {checkout ? (
         <>
           <button
             className="back"
@@ -71,11 +98,8 @@ export function DonateCard() {
           >
             ← Change amount
           </button>
-          <div className="checkout">
-            <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
-              <EmbeddedCheckout />
-            </EmbeddedCheckoutProvider>
-          </div>
+          {error ? <p className="error">{error}</p> : null}
+          <div className="checkout" ref={mountRef} />
         </>
       ) : (
         <>
@@ -95,7 +119,8 @@ export function DonateCard() {
 
           {valid ? (
             <p className="total">
-              Total donation <strong>${selected.toFixed(selected % 1 ? 2 : 0)}</strong>
+              Total donation{" "}
+              <strong>${selected.toFixed(selected % 1 ? 2 : 0)}</strong>
             </p>
           ) : null}
 

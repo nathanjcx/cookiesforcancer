@@ -45,6 +45,20 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const productId = process.env.STRIPE_PRODUCT_ID;
+  const priceData: Stripe.Checkout.SessionCreateParams.LineItem.PriceData = {
+    currency: "usd",
+    unit_amount: cents,
+    ...(productId
+      ? { product: productId }
+      : {
+          product_data: {
+            name: "Donation to Cookies for Cancer",
+            description: "Thank you for baking hope.",
+          },
+        }),
+  };
+
   try {
     const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
@@ -56,14 +70,7 @@ export async function POST(request: NextRequest) {
       line_items: [
         {
           quantity: 1,
-          price_data: {
-            currency: "usd",
-            unit_amount: cents,
-            product_data: {
-              name: "Donation to Cookies for Cancer",
-              description: "Thank you for baking hope.",
-            },
-          },
+          price_data: priceData,
         },
       ],
       return_url: `${siteUrl(request)}/thanks?session_id={CHECKOUT_SESSION_ID}`,
