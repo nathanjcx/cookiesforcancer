@@ -10,31 +10,19 @@ import {
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "";
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null;
 
-const PRESETS = [
-  { amount: 25, label: "Bake a batch" },
-  { amount: 50, label: "Fill a tin" },
-  { amount: 100, label: "Stock the oven" },
-  { amount: 250, label: "Fuel a research day" },
-];
-
 export function DonateCard() {
-  const [frequency, setFrequency] = useState<"once" | "monthly">("once");
-  const [amount, setAmount] = useState(50);
-  const [custom, setCustom] = useState("");
+  const [amount, setAmount] = useState("");
   const [checkout, setCheckout] = useState(false);
   const [error, setError] = useState("");
 
-  const selected = custom ? Number(custom) : amount;
+  const selected = Number(amount);
   const valid = Number.isFinite(selected) && selected >= 1;
 
   const fetchClientSecret = useCallback(async () => {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        amount: selected,
-        frequency,
-      }),
+      body: JSON.stringify({ amount: selected }),
     });
     const data = (await response.json()) as {
       clientSecret?: string;
@@ -44,7 +32,7 @@ export function DonateCard() {
       throw new Error(data.error || "Could not start checkout.");
     }
     return data.clientSecret;
-  }, [frequency, selected]);
+  }, [selected]);
 
   const options = useMemo(
     () => ({ fetchClientSecret }),
@@ -67,16 +55,10 @@ export function DonateCard() {
   }
 
   return (
-    <aside className="card" id="donate">
-      <h2>Give in one tap</h2>
-      <p className="card-sub">
-        Apple Pay, Google Pay, Link, and cards — all on this page.
-      </p>
-
+    <div className="form" id="donate">
       {!publishableKey ? (
         <p className="setup">
-          Payments are ready to go once Stripe keys are added on Vercel. The
-          page and checkout flow are already wired.
+          Add Stripe keys to start accepting donations.
         </p>
       ) : null}
 
@@ -97,71 +79,31 @@ export function DonateCard() {
         </>
       ) : (
         <>
-          <div className="freq" role="group" aria-label="Donation frequency">
-            <button
-              type="button"
-              aria-pressed={frequency === "once"}
-              onClick={() => setFrequency("once")}
-            >
-              One-time
-            </button>
-            <button
-              type="button"
-              aria-pressed={frequency === "monthly"}
-              onClick={() => setFrequency("monthly")}
-            >
-              Monthly
-            </button>
-          </div>
-
-          <div className="amounts" role="group" aria-label="Donation amount">
-            {PRESETS.map((preset) => (
-              <button
-                key={preset.amount}
-                type="button"
-                aria-pressed={!custom && amount === preset.amount}
-                onClick={() => {
-                  setAmount(preset.amount);
-                  setCustom("");
-                }}
-              >
-                <strong>${preset.amount}</strong>
-                <span>{preset.label}</span>
-              </button>
-            ))}
-          </div>
-
+          <p className="field-label">Amount</p>
           <label className="custom">
             <span>$</span>
             <input
               inputMode="decimal"
-              placeholder="Other amount"
-              value={custom}
-              onChange={(event) => setCustom(event.target.value)}
-              aria-label="Custom donation amount"
+              placeholder="Enter donation amount"
+              value={amount}
+              onChange={(event) => setAmount(event.target.value)}
+              aria-label="Donation amount"
             />
           </label>
 
           {error ? <p className="error">{error}</p> : null}
 
-          <button
-            className="donate"
-            type="button"
-            onClick={startCheckout}
-          >
-            {`Donate $${valid ? selected : 0}${frequency === "monthly" ? "/mo" : ""}`}
+          {valid ? (
+            <p className="total">
+              Total donation <strong>${selected.toFixed(selected % 1 ? 2 : 0)}</strong>
+            </p>
+          ) : null}
+
+          <button className="donate" type="button" onClick={startCheckout}>
+            Donate
           </button>
-          <p className="pay-note">
-            Secure checkout by Stripe. You stay on this page.
-          </p>
-          <div className="wallets">
-            <span className="wallet">Apple Pay</span>
-            <span className="wallet">Google Pay</span>
-            <span className="wallet">Link</span>
-            <span className="wallet">Card</span>
-          </div>
         </>
       )}
-    </aside>
+    </div>
   );
 }

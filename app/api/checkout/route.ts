@@ -23,7 +23,7 @@ function siteUrl(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  let body: { amount?: unknown; frequency?: unknown };
+  let body: { amount?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -45,27 +45,22 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const monthly = body.frequency === "monthly";
-
   try {
     const stripe = getStripe();
     const session = await stripe.checkout.sessions.create({
       ui_mode: "embedded",
-      mode: monthly ? "subscription" : "payment",
-      submit_type: monthly ? undefined : "donate",
+      mode: "payment",
+      submit_type: "donate",
       billing_address_collection: "auto",
-      customer_creation: monthly ? undefined : "if_required",
+      customer_creation: "if_required",
       line_items: [
         {
           quantity: 1,
           price_data: {
             currency: "usd",
             unit_amount: cents,
-            recurring: monthly ? { interval: "month" } : undefined,
             product_data: {
-              name: monthly
-                ? "Monthly donation to Cookies for Cancer"
-                : "Donation to Cookies for Cancer",
+              name: "Donation to Cookies for Cancer",
               description: "Thank you for baking hope.",
             },
           },
