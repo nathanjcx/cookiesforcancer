@@ -6,9 +6,8 @@ const siteUrl =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Cookies for Cancer — Donate",
-  description:
-    "A one-page way to give. Donate with Apple Pay, Google Pay, card, or Link. Every gift helps fund the fight against cancer.",
+  title: "Cookies for Cancer",
+  description: "Donate to help people facing cancer.",
   applicationName: "Cookies for Cancer",
   keywords: [
     "donate",
@@ -20,8 +19,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Cookies for Cancer",
-    description:
-      "Bake hope. Donate in seconds with Apple Pay, Google Pay, or card.",
+    description: "Donate to help people facing cancer.",
     url: siteUrl,
     siteName: "Cookies for Cancer",
     type: "website",
@@ -30,8 +28,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Cookies for Cancer",
-    description:
-      "Bake hope. Donate in seconds with Apple Pay, Google Pay, or card.",
+    description: "Donate to help people facing cancer.",
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
