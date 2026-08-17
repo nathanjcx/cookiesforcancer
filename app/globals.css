@@ -43,8 +43,10 @@ input {
   width: min(430px, 100%);
   min-height: 100dvh;
   margin: 0 auto;
-  padding: 20px 20px 32px;
-  background: var(--paper);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .form-header {
@@ -164,7 +166,7 @@ input {
 .thanks {
   min-height: 100dvh;
   display: grid;
-  place-items: start center;
+  place-items: center;
   padding: 20px;
   background: var(--paper);
 }
