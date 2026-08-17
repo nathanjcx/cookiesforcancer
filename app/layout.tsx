@@ -1,0 +1,70 @@
+import type { Metadata, Viewport } from "next";
+import "./globals.css";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://cookiesforcancer.org";
+
+export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
+  title: "Cookies for Cancer — Donate",
+  description:
+    "A one-page way to give. Donate with Apple Pay, Google Pay, card, or Link. Every gift helps fund the fight against cancer.",
+  applicationName: "Cookies for Cancer",
+  keywords: [
+    "donate",
+    "cancer",
+    "cookies for cancer",
+    "Apple Pay",
+    "Google Pay",
+    "charity",
+  ],
+  openGraph: {
+    title: "Cookies for Cancer",
+    description:
+      "Bake hope. Donate in seconds with Apple Pay, Google Pay, or card.",
+    url: siteUrl,
+    siteName: "Cookies for Cancer",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cookies for Cancer",
+    description:
+      "Bake hope. Donate in seconds with Apple Pay, Google Pay, or card.",
+  },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/favicon.svg" }],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#f4ead8",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,650;0,9..144,720;1,9..144,500&family=Outfit:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}
