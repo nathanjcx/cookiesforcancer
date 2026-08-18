@@ -22,14 +22,10 @@ export default function HomePage() {
           <p className="kicker" id="mission-heading">
             Our mission
           </p>
-          <h2>We raise money with cookies for cancer care.</h2>
+          <h2>Cookies fund cancer care.</h2>
           <p>
-            Treatment affects more than health. Families also need help with
-            rides, meals, rent, and time away from work.
-          </p>
-          <p>
-            Donations go to research, patient care, and programs that help
-            cover those costs.
+            Proceeds go to cancer research and to programs that help families
+            with rides, meals, rent, and other costs during treatment.
           </p>
           <Link className="btn btn-accent" href="/donate">
             Donate now
