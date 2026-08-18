@@ -484,6 +484,11 @@ h2 {
   text-decoration: none;
 }
 
+.giving-item:hover,
+.giving-item:focus-visible {
+  background: var(--paper);
+}
+
 .giving-icon {
   display: flex;
   align-items: center;
@@ -492,8 +497,7 @@ h2 {
   height: 44px;
   padding: 6px;
   border-radius: 10px;
-  background: #fff;
-  border: 1px solid var(--line);
+  background: var(--paper);
   flex-shrink: 0;
 }
 
