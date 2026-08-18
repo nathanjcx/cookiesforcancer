@@ -22,21 +22,14 @@ export default function HomePage() {
           <p className="kicker" id="mission-heading">
             Our mission
           </p>
-          <h2>We raise money with cookies so more people can get cancer care.</h2>
+          <h2>We raise money with cookies for cancer care.</h2>
           <p>
-            Cancer does not only ask for strength. It asks for rides at dawn,
-            meals nobody has the energy to cook, and rent that still comes due
-            while someone sits through treatment. Families wait. Kids try to
-            stay brave. The people who love them keep showing up, even when
-            there is little left to say.
+            Treatment affects more than health. Families also need help with
+            rides, meals, rent, and time away from work.
           </p>
           <p>
-            Cookies for Cancer is that same showing-up, turned into help.
-            Every gift goes to research that needs more time, care that needs
-            more hands, and families who need a ride, a meal, or a place to
-            stay near the hospital. A cookie is a small way to stand with
-            someone. Your gift is how that care becomes real — so no one has
-            to carry a diagnosis alone.
+            Donations go to research, patient care, and programs that help
+            cover those costs.
           </p>
           <Link className="btn btn-accent" href="/donate">
             Donate now
