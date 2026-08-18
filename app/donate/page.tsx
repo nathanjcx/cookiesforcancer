@@ -18,10 +18,6 @@ export default async function DonatePage() {
     <div className="shell">
       <SiteHeader current="donate" />
       <main className="donate-main">
-        <header className="donate-intro">
-          <p className="kicker">Give</p>
-          <h1>Enter an amount.</h1>
-        </header>
         <DonateCard />
       </main>
     </div>

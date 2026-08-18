@@ -1,0 +1,133 @@
+const foundations = [
+  {
+    name: "New York Cancer Foundation",
+    href: "https://nycancerfoundation.org/",
+    percent: 55,
+    color: "#2a1a12",
+    note: "Care, rides, and grants",
+    mark: "/foundations/marks/nycf.png",
+  },
+  {
+    name: "American Cancer Society",
+    href: "https://www.cancer.org",
+    percent: 18,
+    color: "#6b3e22",
+    note: "Research and patient support",
+    mark: "/foundations/marks/acs.svg",
+  },
+  {
+    name: "St. Jude Children’s Research Hospital",
+    href: "https://www.stjude.org",
+    percent: 12,
+    color: "#8f5c3a",
+    note: "Childhood cancer care",
+    mark: "/foundations/marks/stjude.svg",
+  },
+  {
+    name: "Susan G. Komen",
+    href: "https://www.komen.org",
+    percent: 8,
+    color: "#c4896a",
+    note: "Breast cancer",
+    mark: "/foundations/marks/komen.svg",
+  },
+  {
+    name: "Leukemia & Lymphoma Society",
+    href: "https://www.lls.org",
+    percent: 7,
+    color: "#d4b896",
+    note: "Blood cancers",
+    mark: "/foundations/marks/lls.png",
+  },
+] as const;
+
+const CX = 100;
+const CY = 100;
+const R_OUT = 90;
+const R_IN = 61;
+const GAP = 2.2;
+
+function polar(r: number, angle: number) {
+  const rad = ((angle - 90) * Math.PI) / 180;
+  return [CX + r * Math.cos(rad), CY + r * Math.sin(rad)] as const;
+}
+
+function donutPath(start: number, end: number) {
+  const large = end - start > 180 ? 1 : 0;
+  const [ox1, oy1] = polar(R_OUT, start);
+  const [ox2, oy2] = polar(R_OUT, end);
+  const [ix2, iy2] = polar(R_IN, end);
+  const [ix1, iy1] = polar(R_IN, start);
+  const f = (n: number) => n.toFixed(2);
+  return `M ${f(ox1)} ${f(oy1)} A ${R_OUT} ${R_OUT} 0 ${large} 1 ${f(ox2)} ${f(oy2)} L ${f(ix2)} ${f(iy2)} A ${R_IN} ${R_IN} 0 ${large} 0 ${f(ix1)} ${f(iy1)} Z`;
+}
+
+const span = 360 - GAP * foundations.length;
+const slices = foundations.map((foundation, index) => {
+  const start =
+    foundations
+      .slice(0, index)
+      .reduce((sum, item) => sum + (item.percent / 100) * span + GAP, 0) +
+    GAP / 2;
+  const sweep = (foundation.percent / 100) * span;
+  return { ...foundation, d: donutPath(start, start + sweep) };
+});
+
+export function FoundationChart() {
+  const majority = foundations[0];
+
+  return (
+    <div className="giving-chart">
+      <div className="giving-ring">
+        <svg
+          viewBox="0 0 200 200"
+          role="img"
+          aria-labelledby="giving-chart-title giving-chart-desc"
+        >
+          <title id="giving-chart-title">Where gifts go</title>
+          <desc id="giving-chart-desc">
+            {foundations
+              .map((item) => `${item.percent}% to ${item.name}`)
+              .join(". ")}
+          </desc>
+          {slices.map((slice) => (
+            <a
+              key={slice.name}
+              href={slice.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${slice.name}, ${slice.percent} percent`}
+            >
+              <path d={slice.d} fill={slice.color} />
+            </a>
+          ))}
+        </svg>
+        <p className="giving-center">
+          <span className="giving-pct">{majority.percent}%</span>
+          <span className="giving-center-label">{majority.name}</span>
+        </p>
+      </div>
+      <ul className="giving-legend">
+        {foundations.map((foundation) => (
+          <li key={foundation.name}>
+            <a
+              className={`giving-item${foundation.percent > 50 ? " is-majority" : ""}`}
+              href={foundation.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="giving-icon">
+                <img src={foundation.mark} alt="" />
+              </span>
+              <span className="giving-copy">
+                <span className="giving-name">{foundation.name}</span>
+                <span className="giving-note">{foundation.note}</span>
+              </span>
+              <span className="giving-share">{foundation.percent}%</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

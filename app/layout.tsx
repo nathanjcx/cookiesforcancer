@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Cookies for Cancer",
   description:
-    "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
+    "Help fight cancer with cookies. Most gifts go to the New York Cancer Foundation.",
   applicationName: "Cookies for Cancer",
   keywords: [
     "donate",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Cookies for Cancer",
     description:
-      "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
+      "Help fight cancer with cookies. Most gifts go to the New York Cancer Foundation.",
     url: siteUrl,
     siteName: "Cookies for Cancer",
     type: "website",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Cookies for Cancer",
     description:
-      "Help fight cancer with cookies. Gifts go to the American Cancer Society.",
+      "Help fight cancer with cookies. Most gifts go to the New York Cancer Foundation.",
   },
   icons: {
     icon: [

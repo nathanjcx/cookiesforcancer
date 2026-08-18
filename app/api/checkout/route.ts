@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import type Stripe from "stripe";
 import { ensureWalletDomains, getStripe } from "@/lib/stripe";
 
 export const runtime = "nodejs";
@@ -51,6 +52,13 @@ export async function POST(request: NextRequest) {
       submit_type: "donate",
       billing_address_collection: "auto",
       customer_creation: "if_required",
+      branding_settings: {
+        display_name: "Cookies for Cancer",
+        background_color: "#f6eee0",
+        button_color: "#1a140f",
+        border_style: "rounded",
+        font_family: "inter",
+      },
       line_items: [
         {
           quantity: 1,
@@ -69,7 +77,7 @@ export async function POST(request: NextRequest) {
         },
       ],
       return_url: `${siteUrl(request)}/thanks?session_id={CHECKOUT_SESSION_ID}`,
-    });
+    } as Stripe.Checkout.SessionCreateParams);
 
     if (!session.client_secret) {
       return NextResponse.json(
