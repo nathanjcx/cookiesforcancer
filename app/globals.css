@@ -12,6 +12,8 @@
   --paper-ink: #2a1a12;
   --radius: 8px;
   --header-h: 64px;
+  --display: Lora, Georgia, serif;
+  --body: Karla, system-ui, sans-serif;
 }
 
 * {
@@ -26,7 +28,7 @@ body {
 }
 
 body {
-  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-family: var(--body);
   font-size: 16px;
   font-weight: 400;
   color: var(--ink);
@@ -117,6 +119,7 @@ input {
 }
 
 .brand-name {
+  font-family: var(--display);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -135,7 +138,7 @@ input {
 }
 
 h1 {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: clamp(2.25rem, 6vw, 3.75rem);
   font-weight: 500;
   letter-spacing: -0.045em;
@@ -144,7 +147,7 @@ h1 {
 }
 
 h2 {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: 1.5rem;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -385,7 +388,7 @@ h2 {
 }
 
 .giving-pct {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: -0.045em;
@@ -478,7 +481,7 @@ h2 {
 }
 
 .giving-share {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -650,8 +653,40 @@ h2 {
   margin-bottom: 32px;
 }
 
+.donate-photo {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 28px;
+  aspect-ratio: 3 / 2;
+  border: 1px solid #111;
+  background: #2a1a12;
+}
+
+.donate-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(0.38) saturate(0.7) contrast(1.08) brightness(0.96);
+}
+
+.donate-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #6b3e22;
+  mix-blend-mode: multiply;
+  opacity: 0.28;
+  pointer-events: none;
+}
+
 .donate-intro h1 {
   font-size: clamp(2rem, 5vw, 2.75rem);
+}
+
+.donate-intro .lede {
+  margin-top: 14px;
+  max-width: 38ch;
 }
 
 .form {
@@ -704,7 +739,7 @@ h2 {
 }
 
 .amount-field span {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: -0.04em;
@@ -717,7 +752,7 @@ h2 {
   border: 0;
   background: transparent;
   color: var(--ink);
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: 1.75rem;
   font-weight: 500;
   letter-spacing: -0.04em;
@@ -860,7 +895,7 @@ h2 {
 }
 
 .thanks-amount {
-  font-family: Fraunces, Georgia, serif;
+  font-family: var(--display);
   font-size: clamp(2rem, 5vw, 2.75rem);
   font-weight: 500;
   letter-spacing: -0.04em;
@@ -932,8 +967,21 @@ h2 {
   padding: 56px 0 80px;
 }
 
-.font-lab-intro {
-  margin-bottom: 40px;
+.font-lab-intro-later {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+
+.font-lab-intro-later h2 {
+  margin: 10px 0 16px;
+}
+
+.font-lab-header {
+  position: relative;
+  top: auto;
+  width: 100%;
+  margin: 0;
 }
 
 .font-lab-intro h1 {
@@ -1005,7 +1053,7 @@ h2 {
 }
 
 .font-lab-brand {
-  font-family: var(--body);
+  font-family: var(--display);
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.02em;

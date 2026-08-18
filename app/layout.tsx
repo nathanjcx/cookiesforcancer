@@ -63,7 +63,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&family=Lora:wght@500;600&display=swap"
           rel="stylesheet"
         />
       </head>

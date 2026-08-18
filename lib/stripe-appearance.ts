@@ -14,7 +14,7 @@ export const stripeAppearance: Appearance = {
     colorIconTab: "#7a6456",
     colorIconTabSelected: "#c24b3a",
     accessibleColorOnColorPrimary: "#fff7f2",
-    fontFamily: "Instrument Sans, system-ui, sans-serif",
+    fontFamily: "Karla, system-ui, sans-serif",
     fontSizeBase: "16px",
     spacingUnit: "4px",
     borderRadius: "8px",
@@ -79,7 +79,7 @@ export const stripeElementsOptions = {
   fonts: [
     {
       cssSrc:
-        "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap",
+        "https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600;700&display=swap",
     },
   ],
 } satisfies Pick<StripeElementsOptions, "fonts">;

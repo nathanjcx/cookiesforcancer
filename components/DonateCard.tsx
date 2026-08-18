@@ -132,7 +132,17 @@ export function DonateCard() {
       ) : (
         <>
           <header className="donate-intro">
-            <h1>Enter an amount.</h1>
+            <figure className="donate-photo">
+              <img
+                src="/care/care-06.png"
+                alt="A doctor sitting with a patient, holding her hand"
+              />
+            </figure>
+            <h1>Donation amount</h1>
+            <p className="lede">
+              Aside from the cookie, your donation will go toward cancer
+              research, care, and families who need it.
+            </p>
           </header>
           <label className="field-label" htmlFor="donation-amount">
             Amount
