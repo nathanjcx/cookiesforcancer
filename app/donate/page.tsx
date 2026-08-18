@@ -15,9 +15,9 @@ export default async function DonatePage() {
   }
 
   return (
-    <div className="shell shell-locked">
+    <div className="shell shell-donate">
       <SiteHeader current="donate" />
-      <main className="donate-main donate-main-locked">
+      <main className="donate-main">
         <DonateCard />
       </main>
     </div>
