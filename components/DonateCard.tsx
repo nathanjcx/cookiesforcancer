@@ -94,7 +94,7 @@ export function DonateCard() {
   }
 
   return (
-    <div className="form" id="donate">
+    <div className={`form${checkout ? " is-checkout" : ""}`} id="donate">
       {!publishableKey ? (
         <p className="notice" role="status">
           Donations are not available yet.

@@ -3,7 +3,7 @@ const foundations = [
     name: "New York Cancer Foundation",
     href: "https://nycancerfoundation.org/",
     percent: 55,
-    color: "#2a1a12",
+    color: "#3a2214",
     note: "Care, rides, and grants",
     mark: "/foundations/marks/nycf.png",
   },
@@ -35,7 +35,7 @@ const foundations = [
     name: "Leukemia & Lymphoma Society",
     href: "https://www.lls.org",
     percent: 7,
-    color: "#d4b896",
+    color: "#e0b07a",
     note: "Blood cancers",
     mark: "/foundations/marks/lls.png",
   },
@@ -43,9 +43,14 @@ const foundations = [
 
 const CX = 100;
 const CY = 100;
-const R_OUT = 90;
-const R_IN = 61;
-const GAP = 2.2;
+const R_OUT = 86;
+const R_IN = 50;
+const GAP = 2.8;
+const DOUGH = "#e8b56d";
+const DOUGH_CENTER = "#f3c98a";
+const INK = "#2a1a12";
+const CHIP = "#3a2214";
+const CHIP_LIT = "#7a4a28";
 
 function polar(r: number, angle: number) {
   const rad = ((angle - 90) * Math.PI) / 180;
@@ -73,6 +78,53 @@ const slices = foundations.map((foundation, index) => {
   return { ...foundation, d: donutPath(start, start + sweep) };
 });
 
+const chips = [
+  { a: 22, r: 68, s: 1.12, rot: -22, kind: "square" as const },
+  { a: 58, r: 74, s: 0.52, rot: 12, kind: "round" as const },
+  { a: 92, r: 67, s: 1, rot: 18, kind: "square" as const },
+  { a: 128, r: 73, s: 0.48, rot: 0, kind: "round" as const },
+  { a: 164, r: 68, s: 1.08, rot: -12, kind: "square" as const },
+  { a: 208, r: 75, s: 0.5, rot: 28, kind: "round" as const },
+  { a: 248, r: 69, s: 0.96, rot: 14, kind: "square" as const },
+  { a: 292, r: 74, s: 0.46, rot: 0, kind: "round" as const },
+  { a: 328, r: 70, s: 0.88, rot: -16, kind: "square" as const },
+];
+
+function Chip({
+  a,
+  r,
+  s,
+  rot,
+  kind,
+}: {
+  a: number;
+  r: number;
+  s: number;
+  rot: number;
+  kind: "square" | "round";
+}) {
+  const [x, y] = polar(r, a);
+  return (
+    <g
+      className="giving-chip"
+      transform={`translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot}) scale(${s})`}
+    >
+      {kind === "square" ? (
+        <rect x="-6.2" y="-6.2" width="12.4" height="12.4" rx="3.4" fill={CHIP} />
+      ) : (
+        <circle r="4.4" fill={CHIP} />
+      )}
+      <path
+        d={kind === "square" ? "M -3.1 -3.4 Q -0.6 -4.4 2.1 -2" : "M -1.8 -1.6 Q 0 -2.4 1.6 -0.6"}
+        fill="none"
+        stroke={CHIP_LIT}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </g>
+  );
+}
+
 export function FoundationChart() {
   const majority = foundations[0];
 
@@ -90,6 +142,15 @@ export function FoundationChart() {
               .map((item) => `${item.percent}% to ${item.name}`)
               .join(". ")}
           </desc>
+          <defs>
+            <clipPath id="giving-cookie-clip">
+              <circle cx={CX} cy={CY} r={R_OUT} />
+            </clipPath>
+          </defs>
+          <g clipPath="url(#giving-cookie-clip)">
+            <circle cx={CX} cy={CY} r={R_OUT} fill={DOUGH} />
+            <circle cx="76" cy="100" r="72" fill={INK} opacity="0.1" />
+          </g>
           {slices.map((slice) => (
             <a
               key={slice.name}
@@ -101,6 +162,25 @@ export function FoundationChart() {
               <path d={slice.d} fill={slice.color} />
             </a>
           ))}
+          <circle
+            cx={CX}
+            cy={CY}
+            r={R_IN}
+            fill={DOUGH_CENTER}
+            stroke={INK}
+            strokeWidth="3.2"
+          />
+          {chips.map((chip) => (
+            <Chip key={`${chip.a}-${chip.r}`} {...chip} />
+          ))}
+          <circle
+            cx={CX}
+            cy={CY}
+            r={R_OUT}
+            fill="none"
+            stroke={INK}
+            strokeWidth="5.5"
+          />
         </svg>
         <p className="giving-center">
           <span className="giving-pct">{majority.percent}%</span>
