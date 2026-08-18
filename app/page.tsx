@@ -32,16 +32,6 @@ export default function HomePage() {
             Care teams need room to keep going. None of that is abstract. It is
             bills, hours, and people who should not have to carry it alone.
           </p>
-          <p>
-            So we keep the ask simple. You give. We put that gift into the
-            fight. Every dollar goes to cancer foundations doing the work —
-            labs, hospitals, and programs that help people get through a
-            diagnosis. Most of it goes to the New York Cancer Foundation, which
-            helps people in treatment with rides, bills, and a place to stay.
-            The rest is split with research and care partners. A cookie is not
-            a cure. It is a way in. If you can give, give. We&apos;ll take it
-            from here.
-          </p>
           <Link className="btn btn-accent" href="/donate">
             Donate now
           </Link>

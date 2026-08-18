@@ -98,10 +98,11 @@ export function CareCarousel() {
   }
 
   return (
-    <section
-      className="care-carousel"
-      aria-label="People in cancer care"
-      ref={rootRef}
+    <div className="care-wrap">
+      <section
+        className="care-carousel"
+        aria-label="People in cancer care"
+        ref={rootRef}
       onPointerDown={(event) => {
         const root = rootRef.current;
         if (!root) return;
@@ -148,5 +149,6 @@ export function CareCarousel() {
         ))}
       </div>
     </section>
+    </div>
   );
 }

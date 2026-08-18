@@ -111,7 +111,7 @@ export function FoundationChart() {
         {foundations.map((foundation) => (
           <li key={foundation.name}>
             <a
-              className={`giving-item${foundation.percent > 50 ? " is-majority" : ""}`}
+              className="giving-item"
               href={foundation.href}
               target="_blank"
               rel="noreferrer"

@@ -253,9 +253,51 @@ h2 {
   margin-bottom: 0;
 }
 
-.care-carousel {
+.care-wrap {
+  position: relative;
   width: min(720px, calc(100% - 48px));
   margin: 0 auto 8px;
+}
+
+.care-wrap::before,
+.care-wrap::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  width: 36px;
+  height: 200px;
+  z-index: 2;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.care-wrap::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to right, #000 25%, transparent);
+  -webkit-mask-image: linear-gradient(to right, #000 25%, transparent);
+}
+
+.care-wrap::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 40%, transparent) 55%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to left, #000 25%, transparent);
+  -webkit-mask-image: linear-gradient(to left, #000 25%, transparent);
+}
+
+.care-carousel {
+  width: 100%;
   padding: 8px 0 36px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -429,24 +471,9 @@ h2 {
   align-items: center;
   padding: 10px 12px;
   background: var(--paper);
-  border: 1px solid var(--line-strong);
+  border: 1px solid #000;
   border-radius: var(--radius);
   text-decoration: none;
-  transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
-}
-
-.giving-item:hover {
-  border-color: var(--ink);
-}
-
-.giving-item:active {
-  background: var(--surface);
-}
-
-.giving-item.is-majority {
-  border-color: var(--ink);
 }
 
 .giving-icon {
@@ -663,8 +690,9 @@ h2 {
 
 .donate-photo {
   position: relative;
+  width: 148px;
   overflow: hidden;
-  margin: 0 0 28px;
+  margin: 0 0 20px;
   aspect-ratio: 3 / 2;
   border: 1px solid #111;
   background: #2a1a12;
@@ -936,7 +964,7 @@ h2 {
   .hero,
   .mission,
   .giving,
-  .care-carousel {
+  .care-wrap {
     width: min(720px, calc(100% - 32px));
   }
 
@@ -955,7 +983,6 @@ h2 {
   .btn,
   .brand-name,
   .amount-field,
-  .giving-item,
   .progress::after,
   .cookie-hero,
   .cookie-mini,
