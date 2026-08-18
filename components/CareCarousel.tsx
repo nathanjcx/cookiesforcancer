@@ -12,19 +12,12 @@ const photos = [
   { src: "/care/care-07.png", alt: "A nurse holding a patient's hand during treatment" },
 ];
 
-const LOOP_MS = 42000;
+const LOOP_MS = 80000;
 
 export function CareCarousel() {
   const rootRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const loopRef = useRef(0);
-  const pausedRef = useRef(false);
-  const resumeRef = useRef<number>(0);
-  const drag = useRef({
-    active: false,
-    startX: 0,
-    startScroll: 0,
-  });
 
   useEffect(() => {
     const root = rootRef.current;
@@ -57,12 +50,7 @@ export function CareCarousel() {
     const tick = (now: number) => {
       const dt = now - last;
       last = now;
-      if (
-        !pausedRef.current &&
-        !drag.current.active &&
-        !reduce.matches &&
-        loopRef.current > 0
-      ) {
+      if (!reduce.matches && loopRef.current > 0) {
         root.scrollLeft += (loopRef.current / LOOP_MS) * dt;
         wrap();
       }
@@ -73,29 +61,10 @@ export function CareCarousel() {
 
     return () => {
       cancelAnimationFrame(raf);
-      window.clearTimeout(resumeRef.current);
       images.forEach((image) => image.removeEventListener("load", measure));
       observer.disconnect();
     };
   }, []);
-
-  function pause() {
-    window.clearTimeout(resumeRef.current);
-    pausedRef.current = true;
-  }
-
-  function playSoon() {
-    window.clearTimeout(resumeRef.current);
-    resumeRef.current = window.setTimeout(() => {
-      pausedRef.current = false;
-    }, 400);
-  }
-
-  function wrapScroll(next: number) {
-    const loop = loopRef.current;
-    if (loop <= 0) return next;
-    return ((next % loop) + loop) % loop;
-  }
 
   return (
     <div className="care-wrap">
@@ -103,52 +72,19 @@ export function CareCarousel() {
         className="care-carousel"
         aria-label="People in cancer care"
         ref={rootRef}
-      onPointerDown={(event) => {
-        const root = rootRef.current;
-        if (!root) return;
-        pause();
-        if (event.pointerType !== "mouse") return;
-        drag.current = {
-          active: true,
-          startX: event.clientX,
-          startScroll: root.scrollLeft,
-        };
-        event.currentTarget.setPointerCapture(event.pointerId);
-      }}
-      onPointerMove={(event) => {
-        const root = rootRef.current;
-        if (!root || !drag.current.active) return;
-        root.scrollLeft = wrapScroll(
-          drag.current.startScroll - (event.clientX - drag.current.startX),
-        );
-      }}
-      onPointerUp={() => {
-        drag.current.active = false;
-        playSoon();
-      }}
-      onPointerCancel={() => {
-        drag.current.active = false;
-        playSoon();
-      }}
-      onWheel={() => {
-        pause();
-        playSoon();
-      }}
-      onTouchStart={pause}
-      onTouchEnd={playSoon}
-    >
-      <div className="care-track" ref={trackRef}>
-        {[...photos, ...photos].map((photo, index) => (
-          <figure className="care-frame" key={`${photo.src}-${index}`}>
-            <img
-              src={photo.src}
-              alt={index < photos.length ? photo.alt : ""}
-              draggable={false}
-            />
-          </figure>
-        ))}
-      </div>
-    </section>
+      >
+        <div className="care-track" ref={trackRef}>
+          {[...photos, ...photos].map((photo, index) => (
+            <figure className="care-frame" key={`${photo.src}-${index}`}>
+              <img
+                src={photo.src}
+                alt={index < photos.length ? photo.alt : ""}
+                draggable={false}
+              />
+            </figure>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
