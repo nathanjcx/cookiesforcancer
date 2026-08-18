@@ -144,55 +144,57 @@ export function DonateCard() {
               research, care, and families who need it.
             </p>
           </header>
-          <label className="field-label" htmlFor="donation-amount">
-            Amount
-          </label>
-          <div className={`amount-field${error && !valid ? " is-invalid" : ""}`}>
-            <span aria-hidden="true">$</span>
-            <input
-              id="donation-amount"
-              inputMode="decimal"
-              autoComplete="off"
-              placeholder="0"
-              value={amount}
-              onChange={(event) => {
-                setAmount(event.target.value);
-                if (error) setError("");
-              }}
-              aria-invalid={Boolean(error && !valid)}
-              aria-describedby={
-                [!empty ? hintId : null, error ? errorId : null]
-                  .filter(Boolean)
-                  .join(" ") || undefined
-              }
-            />
+          <div className="donate-form-body">
+            <label className="field-label" htmlFor="donation-amount">
+              Amount
+            </label>
+            <div className={`amount-field${error && !valid ? " is-invalid" : ""}`}>
+              <span aria-hidden="true">$</span>
+              <input
+                id="donation-amount"
+                inputMode="decimal"
+                autoComplete="off"
+                placeholder="0"
+                value={amount}
+                onChange={(event) => {
+                  setAmount(event.target.value);
+                  if (error) setError("");
+                }}
+                aria-invalid={Boolean(error && !valid)}
+                aria-describedby={
+                  [!empty ? hintId : null, error ? errorId : null]
+                    .filter(Boolean)
+                    .join(" ") || undefined
+                }
+              />
+            </div>
+            {!empty ? (
+              <p className="field-hint" id={hintId}>
+                {valid
+                  ? `Total ${selected.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      minimumFractionDigits: selected % 1 ? 2 : 0,
+                    })}`
+                  : "Minimum $1."}
+              </p>
+            ) : null}
+
+            {error ? (
+              <p className="error" id={errorId} role="alert">
+                {error}
+              </p>
+            ) : null}
+
+            <button
+              className="btn btn-accent btn-block"
+              type="button"
+              onClick={startCheckout}
+              disabled={!valid || !publishableKey}
+            >
+              Donate
+            </button>
           </div>
-          {!empty ? (
-            <p className="field-hint" id={hintId}>
-              {valid
-                ? `Total ${selected.toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                    minimumFractionDigits: selected % 1 ? 2 : 0,
-                  })}`
-                : "Minimum $1."}
-            </p>
-          ) : null}
-
-          {error ? (
-            <p className="error" id={errorId} role="alert">
-              {error}
-            </p>
-          ) : null}
-
-          <button
-            className="btn btn-accent btn-block"
-            type="button"
-            onClick={startCheckout}
-            disabled={!valid || !publishableKey}
-          >
-            Donate
-          </button>
         </>
       )}
     </div>
