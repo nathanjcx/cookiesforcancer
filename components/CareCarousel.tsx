@@ -17,86 +17,84 @@ const LOOP_MS = 42000;
 export function CareCarousel() {
   const rootRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const animRef = useRef<Animation | null>(null);
   const loopRef = useRef(0);
+  const pausedRef = useRef(false);
+  const resumeRef = useRef<number>(0);
   const drag = useRef({
     active: false,
     startX: 0,
-    startTime: 0,
+    startScroll: 0,
   });
 
   useEffect(() => {
+    const root = rootRef.current;
     const track = trackRef.current;
-    if (!track) return;
+    if (!root || !track) return;
 
-    let anim: Animation | null = null;
-
-    const start = () => {
+    const measure = () => {
       const items = track.querySelectorAll<HTMLElement>(".care-frame");
       if (items.length < photos.length + 1) return;
-      const loop = items[photos.length].offsetLeft - items[0].offsetLeft;
-      if (loop <= 0) return;
-      if (loop === loopRef.current && anim) return;
-
-      const paused = anim?.playState === "paused";
-      const progress =
-        anim && loopRef.current
-          ? (Number(anim.currentTime ?? 0) % LOOP_MS)
-          : 0;
-
-      loopRef.current = loop;
-      anim?.cancel();
-
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        anim = null;
-        animRef.current = null;
-        track.style.transform = "translateX(0)";
-        return;
-      }
-
-      anim = track.animate(
-        [
-          { transform: "translateX(0px)" },
-          { transform: `translateX(${-loop}px)` },
-        ],
-        { duration: LOOP_MS, iterations: Infinity, easing: "linear" },
-      );
-      anim.currentTime = progress;
-      if (paused) anim.pause();
-      animRef.current = anim;
+      loopRef.current = items[photos.length].offsetLeft - items[0].offsetLeft;
     };
 
-    start();
+    measure();
     const images = track.querySelectorAll("img");
-    images.forEach((image) => image.addEventListener("load", start));
-    const observer = new ResizeObserver(start);
+    images.forEach((image) => image.addEventListener("load", measure));
+    const observer = new ResizeObserver(measure);
     observer.observe(track);
 
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let last = performance.now();
+    let raf = 0;
+
+    const wrap = () => {
+      const loop = loopRef.current;
+      if (loop <= 0) return;
+      if (root.scrollLeft >= loop) root.scrollLeft -= loop;
+      if (root.scrollLeft < 0) root.scrollLeft += loop;
+    };
+
+    const tick = (now: number) => {
+      const dt = now - last;
+      last = now;
+      if (
+        !pausedRef.current &&
+        !drag.current.active &&
+        !reduce.matches &&
+        loopRef.current > 0
+      ) {
+        root.scrollLeft += (loopRef.current / LOOP_MS) * dt;
+        wrap();
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+
     return () => {
-      images.forEach((image) => image.removeEventListener("load", start));
+      cancelAnimationFrame(raf);
+      window.clearTimeout(resumeRef.current);
+      images.forEach((image) => image.removeEventListener("load", measure));
       observer.disconnect();
-      anim?.cancel();
-      animRef.current = null;
     };
   }, []);
 
   function pause() {
-    animRef.current?.pause();
+    window.clearTimeout(resumeRef.current);
+    pausedRef.current = true;
   }
 
-  function play() {
-    if (drag.current.active) return;
-    animRef.current?.play();
+  function playSoon() {
+    window.clearTimeout(resumeRef.current);
+    resumeRef.current = window.setTimeout(() => {
+      pausedRef.current = false;
+    }, 400);
   }
 
-  function scrub(clientX: number) {
-    const anim = animRef.current;
+  function wrapScroll(next: number) {
     const loop = loopRef.current;
-    if (!anim || loop <= 0) return;
-    const next =
-      drag.current.startTime -
-      ((clientX - drag.current.startX) * LOOP_MS) / loop;
-    anim.currentTime = ((next % LOOP_MS) + LOOP_MS) % LOOP_MS;
+    if (loop <= 0) return next;
+    return ((next % loop) + loop) % loop;
   }
 
   return (
@@ -104,45 +102,39 @@ export function CareCarousel() {
       className="care-carousel"
       aria-label="People in cancer care"
       ref={rootRef}
-      onMouseEnter={pause}
-      onMouseLeave={() => {
-        drag.current.active = false;
-        play();
-      }}
       onPointerDown={(event) => {
-        const anim = animRef.current;
-        if (!anim) return;
+        const root = rootRef.current;
+        if (!root) return;
         pause();
+        if (event.pointerType !== "mouse") return;
         drag.current = {
           active: true,
           startX: event.clientX,
-          startTime: Number(anim.currentTime ?? 0) % LOOP_MS,
+          startScroll: root.scrollLeft,
         };
         event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerMove={(event) => {
-        if (!drag.current.active) return;
-        scrub(event.clientX);
-      }}
-      onPointerUp={(event) => {
-        drag.current.active = false;
         const root = rootRef.current;
-        if (!root || event.pointerType !== "mouse") {
-          play();
-          return;
-        }
-        const rect = root.getBoundingClientRect();
-        const inside =
-          event.clientX >= rect.left &&
-          event.clientX <= rect.right &&
-          event.clientY >= rect.top &&
-          event.clientY <= rect.bottom;
-        if (!inside) play();
+        if (!root || !drag.current.active) return;
+        root.scrollLeft = wrapScroll(
+          drag.current.startScroll - (event.clientX - drag.current.startX),
+        );
+      }}
+      onPointerUp={() => {
+        drag.current.active = false;
+        playSoon();
       }}
       onPointerCancel={() => {
         drag.current.active = false;
-        play();
+        playSoon();
       }}
+      onWheel={() => {
+        pause();
+        playSoon();
+      }}
+      onTouchStart={pause}
+      onTouchEnd={playSoon}
     >
       <div className="care-track" ref={trackRef}>
         {[...photos, ...photos].map((photo, index) => (

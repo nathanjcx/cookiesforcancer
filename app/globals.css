@@ -254,12 +254,21 @@ h2 {
 }
 
 .care-carousel {
-  overflow: hidden;
-  margin: 0 0 8px;
+  width: min(720px, calc(100% - 48px));
+  margin: 0 auto 8px;
   padding: 8px 0 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: pan-x;
   user-select: none;
+}
+
+.care-carousel::-webkit-scrollbar {
+  display: none;
 }
 
 .care-carousel:active {
@@ -270,7 +279,6 @@ h2 {
   display: flex;
   gap: 10px;
   width: max-content;
-  will-change: transform;
 }
 
 .care-frame {
@@ -927,7 +935,8 @@ h2 {
 
   .hero,
   .mission,
-  .giving {
+  .giving,
+  .care-carousel {
     width: min(720px, calc(100% - 32px));
   }
 

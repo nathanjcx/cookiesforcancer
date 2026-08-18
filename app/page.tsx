@@ -51,10 +51,11 @@ export default function HomePage() {
           <p className="kicker" id="giving-heading">
             Where gifts go
           </p>
-          <h2>Most of every gift goes to the New York Cancer Foundation.</h2>
+          <h2>Foundations we donate to</h2>
           <p>
-            They help people in treatment with transportation and non-medical
-            bills. The rest is shared with research and care partners.
+            The New York Cancer Foundation helps people in treatment with
+            transportation and non-medical bills. The rest is shared with
+            research and care partners.
           </p>
           <FoundationChart />
         </section>
