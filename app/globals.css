@@ -701,6 +701,42 @@ h2 {
   flex: 1;
 }
 
+.shell-locked {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.donate-main-locked {
+  height: calc(100dvh - var(--header-h) - 24px);
+  padding: 20px 0 16px;
+}
+
+.donate-main-locked .form {
+  height: 100%;
+  overflow: hidden;
+}
+
+.donate-main-locked .form.is-checkout {
+  display: flex;
+  flex-direction: column;
+}
+
+.donate-main-locked .form.is-checkout .checkout-wrap,
+.donate-main-locked .form.is-checkout .checkout,
+.donate-main-locked .form.is-checkout .checkout[data-ready="false"] {
+  min-height: 0;
+  height: 100%;
+}
+
+.donate-main-locked .donate-intro {
+  margin-bottom: 18px;
+}
+
+.donate-main-locked .donate-photo {
+  margin-bottom: 16px;
+  aspect-ratio: 16 / 9;
+}
+
 .donate-intro {
   margin-bottom: 32px;
 }
@@ -1003,6 +1039,19 @@ h2 {
   .thanks {
     width: min(440px, calc(100% - 32px));
     padding-top: 40px;
+  }
+
+  .donate-main-locked {
+    height: calc(100dvh - var(--header-h) - 16px);
+    padding: 12px 0 10px;
+  }
+
+  .donate-main-locked .donate-intro h1 {
+    font-size: clamp(1.6rem, 7vw, 2rem);
+  }
+
+  .donate-main-locked .donate-intro .lede {
+    margin-top: 10px;
   }
 }
 
