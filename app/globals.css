@@ -971,9 +971,19 @@ h2 {
 
   .hero,
   .mission,
-  .giving,
-  .care-wrap {
+  .giving {
     width: min(720px, calc(100% - 32px));
+  }
+
+  .care-wrap {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .care-wrap::before,
+  .care-wrap::after {
+    display: none;
   }
 
   .hero {
