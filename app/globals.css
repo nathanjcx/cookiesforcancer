@@ -306,8 +306,29 @@ h2 {
 
 .care-track {
   display: flex;
-  gap: 10px;
   width: max-content;
+  animation: care-marquee 80s linear infinite;
+}
+
+.care-set {
+  display: flex;
+  gap: 10px;
+  padding-right: 10px;
+}
+
+@keyframes care-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .care-track {
+    animation: none;
+  }
 }
 
 .care-frame {
