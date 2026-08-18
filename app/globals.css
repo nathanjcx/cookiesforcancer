@@ -120,7 +120,7 @@ input {
 
 .brand-name {
   font-family: var(--display);
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   white-space: nowrap;

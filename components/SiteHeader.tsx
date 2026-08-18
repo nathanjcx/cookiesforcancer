@@ -5,7 +5,7 @@ export function SiteHeader({ current }: { current?: "home" | "donate" }) {
   return (
     <header className="site-header">
       <a className="brand" href="/">
-        <CookieMark size={28} />
+        <CookieMark size={32} />
         <span className="brand-name">Cookies for Cancer</span>
       </a>
       {current === "donate" ? (
