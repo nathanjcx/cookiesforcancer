@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { CareCarousel } from "@/components/CareCarousel";
 import { CookieScene } from "@/components/CookieScene";
 import { FoundationChart } from "@/components/FoundationChart";
@@ -27,9 +26,6 @@ export default function HomePage() {
             Proceeds go to cancer research and to programs that help families
             with rides, meals, rent, and other costs during treatment.
           </p>
-          <Link className="btn btn-accent" href="/donate">
-            Donate now
-          </Link>
         </section>
 
         <section className="giving" aria-labelledby="giving-heading">
