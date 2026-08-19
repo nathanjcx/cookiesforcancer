@@ -73,31 +73,19 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  width: min(720px, calc(100% - 24px));
-  height: 56px;
-  margin: 12px auto 0;
-  padding: 6px 6px 6px 16px;
-  border: 1px solid rgba(42, 26, 18, 0.1);
-  border-radius: 999px;
-  background: rgba(255, 248, 238, 0.58);
-  backdrop-filter: blur(18px) saturate(1.5);
-  -webkit-backdrop-filter: blur(18px) saturate(1.5);
-  box-shadow: 0 10px 28px rgba(42, 26, 18, 0.07);
+  width: min(720px, calc(100% - 48px));
+  height: 64px;
+  margin: 0 auto;
+  padding: 12px 0;
+  background: var(--bg);
   position: sticky;
-  top: 12px;
+  top: 0;
   z-index: 10;
 }
 
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .site-header {
-    background: rgba(255, 248, 238, 0.94);
-  }
-}
-
 .site-header .btn {
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 999px;
+  height: 42px;
+  padding: 0 16px;
   flex-shrink: 0;
 }
 
@@ -661,8 +649,7 @@ h2 {
 
 @media (max-width: 640px) {
   .site-header {
-    width: min(720px, calc(100% - 16px));
-    padding: 5px 5px 5px 12px;
+    width: min(720px, calc(100% - 32px));
   }
 
   .hero,
