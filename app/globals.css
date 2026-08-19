@@ -247,7 +247,7 @@ h2 {
 .hero {
   width: min(720px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 56px 0 28px;
+  padding: 72px 0 40px;
 }
 
 .hero h1 {
@@ -257,114 +257,6 @@ h2 {
 
 .hero .lede {
   margin-bottom: 0;
-}
-
-.care-wrap {
-  position: relative;
-  width: min(720px, calc(100% - 48px));
-  margin: 0 auto 8px;
-}
-
-.care-wrap::before,
-.care-wrap::after {
-  content: "";
-  position: absolute;
-  top: 8px;
-  width: 36px;
-  height: 200px;
-  z-index: 2;
-  pointer-events: none;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.care-wrap::before {
-  left: 0;
-  background: linear-gradient(
-    to right,
-    var(--bg) 0%,
-    color-mix(in srgb, var(--bg) 40%, transparent) 55%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(to right, #000 25%, transparent);
-  -webkit-mask-image: linear-gradient(to right, #000 25%, transparent);
-}
-
-.care-wrap::after {
-  right: 0;
-  background: linear-gradient(
-    to left,
-    var(--bg) 0%,
-    color-mix(in srgb, var(--bg) 40%, transparent) 55%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(to left, #000 25%, transparent);
-  -webkit-mask-image: linear-gradient(to left, #000 25%, transparent);
-}
-
-.care-carousel {
-  width: 100%;
-  padding: 8px 0 36px;
-  overflow: hidden;
-  pointer-events: none;
-  user-select: none;
-}
-
-.care-track {
-  display: flex;
-  width: max-content;
-  animation: care-marquee 80s linear infinite;
-}
-
-.care-set {
-  display: flex;
-  gap: 10px;
-  padding-right: 10px;
-}
-
-@keyframes care-marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .care-track {
-    animation: none;
-  }
-}
-
-.care-frame {
-  position: relative;
-  flex: 0 0 auto;
-  width: 300px;
-  height: 200px;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid #111;
-  background: #2a1a12;
-}
-
-.care-frame img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-  filter: sepia(0.38) saturate(0.7) contrast(1.08) brightness(0.96);
-}
-
-.care-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #6b3e22;
-  mix-blend-mode: multiply;
-  opacity: 0.28;
-  pointer-events: none;
 }
 
 .mission,
@@ -403,172 +295,20 @@ h2 {
   max-width: 16em;
 }
 
-.giving-chart {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 28px;
-}
-
-.giving-caption {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.giving-stack {
-  display: flex;
-  gap: 1px;
-  height: 48px;
-  overflow: hidden;
-  border: 1px solid #000;
-  border-radius: var(--radius);
-  background: #000;
-}
-
-.giving-seg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-  flex-basis: 0;
-  overflow: hidden;
-  text-decoration: none;
-  font-family: var(--display);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.giving-seg:hover {
-  filter: brightness(1.08);
-}
-
-.giving-seg:focus-visible {
-  outline: 2px solid var(--ink);
-  outline-offset: -3px;
-  z-index: 1;
-}
-
-.giving-legend {
+.giving-list {
   list-style: none;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 10px;
 }
 
-.giving-item {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1fr) auto;
-  grid-template-areas:
-    "icon copy share"
-    "icon bar bar";
-  gap: 6px 12px;
-  align-items: center;
-  padding: 12px;
-  background: var(--paper);
-  border: 1px solid #000;
-  border-radius: var(--radius);
-  text-decoration: none;
-}
-
-.giving-item:hover .giving-name {
-  text-decoration: underline;
+.giving-list a {
   text-underline-offset: 3px;
 }
 
-.giving-icon {
-  grid-area: icon;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 6px;
-  border-radius: 10px;
-  background: var(--paper);
-  flex-shrink: 0;
-}
-
-.giving-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-.giving-copy {
-  grid-area: copy;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-
-.giving-name {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-}
-
-.giving-note {
-  font-size: 0.75rem;
-  color: var(--muted);
-}
-
-.giving-share {
-  grid-area: share;
-  font-family: var(--display);
-  font-size: 1.125rem;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
-
-.giving-track {
-  grid-area: bar;
-  display: block;
-  height: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(42, 26, 18, 0.08);
-}
-
-.giving-fill {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  transform-origin: left center;
-  animation: giving-grow 0.7s ease-out both;
-}
-
-.giving-legend li:nth-child(2) .giving-fill {
-  animation-delay: 0.06s;
-}
-
-.giving-legend li:nth-child(3) .giving-fill {
-  animation-delay: 0.12s;
-}
-
-.giving-legend li:nth-child(4) .giving-fill {
-  animation-delay: 0.18s;
-}
-
-.giving-legend li:nth-child(5) .giving-fill {
-  animation-delay: 0.24s;
-}
-
-@keyframes giving-grow {
-  from {
-    transform: scaleX(0);
-  }
+.giving-list a:hover {
+  opacity: 0.72;
 }
 
 .shell-donate {
@@ -931,27 +671,8 @@ h2 {
     width: min(720px, calc(100% - 32px));
   }
 
-  .care-wrap {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .care-wrap::before,
-  .care-wrap::after {
-    display: none;
-  }
-
   .hero {
-    padding: 48px 0 40px;
-  }
-
-  .giving-seg {
-    font-size: 0.8125rem;
-  }
-
-  .giving-seg:not(:first-child) span {
-    display: none;
+    padding: 56px 0 32px;
   }
 
   .donate-main,
@@ -974,8 +695,7 @@ h2 {
   .btn,
   .brand-name,
   .amount-field,
-  .progress::after,
-  .giving-fill {
+  .progress::after {
     transition: none;
     animation: none;
   }

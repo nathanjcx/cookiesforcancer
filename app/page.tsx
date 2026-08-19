@@ -1,6 +1,27 @@
-import { CareCarousel } from "@/components/CareCarousel";
-import { FoundationChart } from "@/components/FoundationChart";
 import { SiteHeader } from "@/components/SiteHeader";
+
+const foundations = [
+  {
+    name: "New York Cancer Foundation",
+    href: "https://nycancerfoundation.org/",
+  },
+  {
+    name: "American Cancer Society",
+    href: "https://www.cancer.org",
+  },
+  {
+    name: "St. Jude Children’s Research Hospital",
+    href: "https://www.stjude.org",
+  },
+  {
+    name: "Susan G. Komen",
+    href: "https://www.komen.org",
+  },
+  {
+    name: "Leukemia & Lymphoma Society",
+    href: "https://www.lls.org",
+  },
+];
 
 export default function HomePage() {
   return (
@@ -13,8 +34,6 @@ export default function HomePage() {
             Your gift supports research, care, and families who need it.
           </p>
         </section>
-
-        <CareCarousel />
 
         <section className="mission" aria-labelledby="mission-heading">
           <p className="kicker" id="mission-heading">
@@ -37,7 +56,15 @@ export default function HomePage() {
             transportation and non-medical bills. The rest is shared with
             research and care partners.
           </p>
-          <FoundationChart />
+          <ul className="giving-list">
+            {foundations.map((foundation) => (
+              <li key={foundation.name}>
+                <a href={foundation.href} target="_blank" rel="noreferrer">
+                  {foundation.name}
+                </a>
+              </li>
+            ))}
+          </ul>
         </section>
       </main>
       <footer className="site-footer">
