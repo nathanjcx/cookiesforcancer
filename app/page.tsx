@@ -1,28 +1,5 @@
 import { SiteHeader } from "@/components/SiteHeader";
 
-const foundations = [
-  {
-    name: "New York Cancer Foundation",
-    href: "https://nycancerfoundation.org/",
-  },
-  {
-    name: "American Cancer Society",
-    href: "https://www.cancer.org",
-  },
-  {
-    name: "St. Jude Children’s Research Hospital",
-    href: "https://www.stjude.org",
-  },
-  {
-    name: "Susan G. Komen",
-    href: "https://www.komen.org",
-  },
-  {
-    name: "Leukemia & Lymphoma Society",
-    href: "https://www.lls.org",
-  },
-];
-
 export default function HomePage() {
   return (
     <div className="shell">
@@ -50,21 +27,14 @@ export default function HomePage() {
           <p className="kicker" id="giving-heading">
             Where gifts go
           </p>
-          <h2>Foundations we donate to</h2>
+          <h2>All proceeds go to local care.</h2>
           <p>
-            The New York Cancer Foundation helps people in treatment with
-            transportation and non-medical bills. The rest is shared with
-            research and care partners.
+            Gifts support local cancer research and patient care, like the{" "}
+            <a href="https://nycancerfoundation.org/" target="_blank" rel="noreferrer">
+              New York Cancer Foundation
+            </a>
+            .
           </p>
-          <ul className="giving-list">
-            {foundations.map((foundation) => (
-              <li key={foundation.name}>
-                <a href={foundation.href} target="_blank" rel="noreferrer">
-                  {foundation.name}
-                </a>
-              </li>
-            ))}
-          </ul>
         </section>
       </main>
       <footer className="site-footer">
