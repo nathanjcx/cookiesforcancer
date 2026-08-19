@@ -1,5 +1,4 @@
 import { CareCarousel } from "@/components/CareCarousel";
-import { CookieScene } from "@/components/CookieScene";
 import { FoundationChart } from "@/components/FoundationChart";
 import { SiteHeader } from "@/components/SiteHeader";
 
@@ -40,8 +39,6 @@ export default function HomePage() {
           </p>
           <FoundationChart />
         </section>
-
-        <CookieScene />
       </main>
       <footer className="site-footer">
         <p>© {new Date().getFullYear()} Cookies for Cancer</p>
