@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { CookieMark } from "@/components/CookieMark";
 
 export function DonateCard() {
   const [amount, setAmount] = useState("");
@@ -132,13 +131,33 @@ export function DonateCard() {
         </>
       ) : (
         <>
+          <figure className="donate-photo">
+            <img
+              src="/care/care-06.png"
+              alt="A doctor sitting with a patient, holding her hand"
+            />
+          </figure>
           <header className="donate-intro">
-            <CookieMark size={64} />
             <h1>Donation amount</h1>
             <p className="lede">
-              Aside from the cookie, your donation will go toward cancer
-              research, care, and families who need it.
+              All proceeds go to local NYC cancer research and patient care,
+              such as the New York Cancer Foundation.
             </p>
+            <a
+              className="partner"
+              href="https://nycancerfoundation.org/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                className="partner-mark"
+                src="/foundations/marks/nycf-icon.png"
+                alt=""
+                width={40}
+                height={40}
+              />
+              <span>New York Cancer Foundation</span>
+            </a>
           </header>
           <div className="donate-form-body">
             <label className="field-label" htmlFor="donation-amount">

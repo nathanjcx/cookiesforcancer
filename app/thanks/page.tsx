@@ -1,7 +1,6 @@
-import Link from "next/link";
 import Stripe from "stripe";
-import { CookieMark } from "@/components/CookieMark";
 import { SiteHeader } from "@/components/SiteHeader";
+import { ThanksHero } from "@/components/ThanksHero";
 
 export const metadata = {
   title: "Thanks | Cookies for Cancer",
@@ -64,21 +63,13 @@ export default async function ThanksPage({
     <div className="shell">
       <SiteHeader />
       <main className="thanks">
-        <CookieMark size={64} />
-        <h1>You showed up.</h1>
-        <p className="thanks-amount">{amount ?? "$5"}</p>
-        <p className="lede">
-          Your cookie is in the fight. Somewhere a lab stays funded a little
-          longer, a family gets a ride, someone facing cancer gets more room
-          to breathe.
-        </p>
-        <p className="lede">
-          We take it from here. Go eat a cookie. We&apos;ll get this gift to
-          the foundations we bake for.
-        </p>
-        <Link className="btn btn-ghost" href="/">
-          Back home
-        </Link>
+        <ThanksHero />
+        <h1>
+          {amount
+            ? `Thank you for your ${amount} donation!`
+            : "Thank you for your donation!"}
+        </h1>
+        <p className="lede">Your contribution will make a difference</p>
       </main>
     </div>
   );
