@@ -395,7 +395,7 @@ h2 {
   width: 92px;
   height: 76px;
   color: var(--ink);
-  background: var(--paper);
+  background: transparent;
   border: 1px solid #111;
 }
 
