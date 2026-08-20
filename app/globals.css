@@ -404,23 +404,27 @@ h2 {
   align-items: center;
   gap: 10px;
   margin-top: 16px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid #111;
+  border-radius: var(--radius);
+  background: transparent;
   text-decoration: none;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: -0.02em;
+  color: inherit;
 }
 
+.partner:hover,
 .partner:hover span {
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration: none;
 }
 
 .partner-mark {
   display: block;
   width: 40px;
   height: 40px;
-  border-radius: 8px;
-  background: #111;
+  background: transparent;
   flex-shrink: 0;
 }
 
