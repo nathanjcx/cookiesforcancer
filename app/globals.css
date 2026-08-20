@@ -106,7 +106,6 @@ input {
 .cookie-mark {
   display: block;
   flex-shrink: 0;
-  border-radius: 50%;
 }
 
 .brand-name {
@@ -342,15 +341,20 @@ h2 {
   pointer-events: none;
 }
 
-.home-note {
+.mission {
   width: var(--page);
   margin: 0 auto;
-  padding: 24px 0 40px;
-  border-top: 1px solid var(--line);
+  padding: 8px 0 40px;
 }
 
-.home-note .lede {
-  margin-bottom: 0;
+.mission h2 {
+  margin: 10px 0 16px;
+  max-width: 18em;
+}
+
+.mission p {
+  color: var(--muted);
+  max-width: 52ch;
 }
 
 .donate-photo {
@@ -651,60 +655,14 @@ h2 {
 }
 
 .thanks-hero {
-  width: 160px;
-  height: 141px;
+  width: 88px;
+  height: 88px;
   margin: 0 0 8px;
 }
 
-.thanks-hero-svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.thanks-glow {
-  transform-origin: 100px 96px;
-  animation: thanks-glow 2.8s ease-in-out infinite;
-}
-
-.thanks-cookie {
-  transform-origin: 100px 110px;
+.thanks-hero .cookie-mark {
+  transform-origin: 50% 60%;
   animation: thanks-cookie 4.2s ease-in-out infinite;
-}
-
-.thanks-heart {
-  transform-origin: 100px 62px;
-  animation: thanks-heart 1.8s ease-in-out infinite;
-}
-
-.thanks-sparkle {
-  transform-origin: center;
-  transform-box: fill-box;
-}
-
-.thanks-sparkle-a {
-  animation: thanks-sparkle 2.4s ease-in-out infinite;
-}
-
-.thanks-sparkle-b {
-  animation: thanks-sparkle 2.4s ease-in-out 0.5s infinite;
-}
-
-.thanks-sparkle-c {
-  animation: thanks-sparkle 2.4s ease-in-out 1s infinite;
-}
-
-@keyframes thanks-glow {
-  0%,
-  100% {
-    opacity: 0.7;
-    transform: scale(0.96);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.08);
-  }
 }
 
 @keyframes thanks-cookie {
@@ -714,28 +672,6 @@ h2 {
   }
   50% {
     transform: translateY(-4px) rotate(1.4deg);
-  }
-}
-
-@keyframes thanks-heart {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.12);
-  }
-}
-
-@keyframes thanks-sparkle {
-  0%,
-  100% {
-    opacity: 0.25;
-    transform: scale(0.7);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
   }
 }
 
@@ -761,8 +697,8 @@ h2 {
     padding: 64px 0 40px;
   }
 
-  .home-note {
-    padding: 28px 0 48px;
+  .mission {
+    padding: 8px 0 48px;
   }
 
   .donate-main {
@@ -855,12 +791,7 @@ h2 {
   .amount-field,
   .progress::after,
   .care-track,
-  .thanks-glow,
-  .thanks-cookie,
-  .thanks-heart,
-  .thanks-sparkle-a,
-  .thanks-sparkle-b,
-  .thanks-sparkle-c {
+  .thanks-hero .cookie-mark {
     transition: none;
     animation: none;
   }

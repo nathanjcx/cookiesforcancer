@@ -12,9 +12,14 @@ export default function HomePage() {
 
         <CareCarousel />
 
-        <section className="home-note">
-          <p className="lede">
-            Your gift supports research, care, and families who need it.
+        <section className="mission" aria-labelledby="mission-heading">
+          <p className="kicker" id="mission-heading">
+            Our mission
+          </p>
+          <h2>Cookies fund cancer care.</h2>
+          <p>
+            Proceeds go to cancer research and to programs that help families
+            with rides, meals, rent, and other costs during treatment.
           </p>
         </section>
       </main>
