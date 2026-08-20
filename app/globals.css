@@ -344,17 +344,113 @@ h2 {
 .mission {
   width: var(--page);
   margin: 0 auto;
-  padding: 8px 0 40px;
+  padding: 8px 0 32px;
 }
 
 .mission h2 {
-  margin: 10px 0 16px;
+  margin: 0 0 16px;
   max-width: 18em;
 }
 
 .mission p {
   color: var(--muted);
   max-width: 52ch;
+}
+
+.stats {
+  width: var(--page);
+  margin: 0 auto;
+  padding: 8px 0 48px;
+}
+
+.stats h2 {
+  margin: 0 0 16px;
+}
+
+.stats > p {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+.stats-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  margin: 28px 0 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.stat-graphic {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 92px;
+  height: 76px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid #111;
+}
+
+.stat-svg {
+  display: block;
+  width: 88px;
+  height: 72px;
+}
+
+.stat-copy {
+  min-width: 0;
+}
+
+.stat-value {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  max-width: 28ch;
+}
+
+.stats-source {
+  margin-top: 16px;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.stats-source a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.stats-source a:hover {
+  color: var(--ink);
+}
+
+.stat-ring-now {
+  stroke-dashoffset: 0;
+  animation: stat-ring 1.1s ease both;
+}
+
+@keyframes stat-ring {
+  from {
+    stroke-dashoffset: 151;
+  }
 }
 
 .donate-photo {
@@ -399,35 +495,6 @@ h2 {
   max-width: 42ch;
 }
 
-.partner {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  padding: 4px 12px 4px 4px;
-  border: 1px solid #111;
-  border-radius: var(--radius);
-  background: transparent;
-  text-decoration: none;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: inherit;
-}
-
-.partner:hover,
-.partner:hover span {
-  text-decoration: none;
-}
-
-.partner-mark {
-  display: block;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  flex-shrink: 0;
-}
-
 .donate-main {
   width: var(--narrow);
   margin: 0 auto;
@@ -443,13 +510,7 @@ h2 {
   flex: 1;
 }
 
-.form:not(.is-checkout) {
-  min-height: calc(100dvh - var(--header-h) - 36px);
-}
-
 .donate-form-body {
-  margin-top: auto;
-  padding-top: 8px;
   padding-bottom: env(safe-area-inset-bottom);
 }
 
@@ -702,15 +763,40 @@ h2 {
   }
 
   .mission {
-    padding: 8px 0 48px;
+    padding: 8px 0 36px;
+  }
+
+  .stats {
+    padding: 8px 0 64px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stat {
+    padding: 24px 0;
+  }
+
+  .stat:nth-child(odd) {
+    padding-right: 24px;
+    border-right: 1px solid var(--line);
+  }
+
+  .stat:nth-child(even) {
+    padding-left: 24px;
+  }
+
+  .stat:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .stat-value {
+    font-size: 1.625rem;
   }
 
   .donate-main {
     padding: 24px 0 48px;
-  }
-
-  .form:not(.is-checkout) {
-    min-height: calc(100dvh - var(--header-h) - 72px);
   }
 
   .donate-intro {
@@ -795,7 +881,8 @@ h2 {
   .amount-field,
   .progress::after,
   .care-track,
-  .thanks-hero .cookie-mark {
+  .thanks-hero .cookie-mark,
+  .stat-ring-now {
     transition: none;
     animation: none;
   }

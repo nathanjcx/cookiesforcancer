@@ -143,21 +143,6 @@ export function DonateCard() {
               All proceeds go to local NYC cancer research and patient care,
               such as the New York Cancer Foundation.
             </p>
-            <a
-              className="partner"
-              href="https://nycancerfoundation.org/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <img
-                className="partner-mark"
-                src="/foundations/marks/nycf-icon.png"
-                alt=""
-                width={40}
-                height={40}
-              />
-              <span>New York Cancer Foundation</span>
-            </a>
           </header>
           <div className="donate-form-body">
             <label className="field-label" htmlFor="donation-amount">
